@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NDHU Hub - National Dong Hwa University Student Portal & Mutual Aid</title>
+  <meta name="description" content="A comprehensive student web application for National Dong Hwa University featuring Emergency SOS mutual aid, Shoufeng food reviews, and senior wisdom archive.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+
+  <!-- Top Campus Emergency Notice & Quick Hotlines Bar -->
+  <aside class="campus-notice-bar" aria-label="Campus Emergency Contacts">
+    <div class="container notice-inner">
+      <div class="notice-highlight">
+        <span class="notice-tag">Campus Safety</span>
+        <span>National Dong Hwa University (NDHU) Student Mutual Aid Network</span>
+      </div>
+      <div class="emergency-quick-contacts">
+        <a href="tel:038906995" class="contact-pill" title="Campus 24hr Security Hotline">
+          <span>📞 Campus Security:</span> <strong>03-890-6995</strong>
+        </a>
+        <a href="tel:038652110" class="contact-pill" title="Shoufeng Police Station">
+          <span>🚓 Shoufeng Police:</span> <strong>03-865-2110</strong>
+        </a>
+        <a href="tel:038906254" class="contact-pill" title="Health Center Clinic">
+          <span>🏥 Health Center:</span> <strong>03-890-6254</strong>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <a class="brand-link" onclick="App.switchTab('sos')">
+        <div class="brand-badge-icon" aria-hidden="true">東</div>
+        <div class="brand-info">
+          <div class="brand-title">NDHU <span class="hub-tag">Hub</span></div>
+          <div class="brand-subtitle">國立東華大學 校園生活與互助平台</div>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="btn-icon" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+          🌙
+        </button>
+        <button id="btn-reset-demo-data" class="btn btn-sm btn-outline" title="Reset to initial sample data">
+          ↺ Reset Demo Data
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Clean Tabs Bar -->
+  <nav class="nav-tabs-wrapper" aria-label="Primary Features Navigation">
+    <div class="container">
+      <div class="nav-tabs" role="tablist">
+        <!-- Feature 1: Emergency Helpboard -->
+        <button class="nav-tab-btn tab-sos active" data-tab="sos" role="tab" aria-selected="true" id="tab-btn-sos">
+          <span>🚨 Emergency Helpboard</span>
+          <span class="badge-count badge-sos-live" id="sos-active-count">Active</span>
+        </button>
+
+        <!-- Feature 2: Campus Food & Dish Reviews -->
+        <button class="nav-tab-btn" data-tab="food" role="tab" aria-selected="false" id="tab-btn-food">
+          <span>🍜 Campus Food & Dish Reviews</span>
+          <span class="badge-count">Shoufeng & Zhixue</span>
+        </button>
+
+        <!-- Feature 3: Senior Wisdom & Experience Hub -->
+        <button class="nav-tab-btn" data-tab="wisdom" role="tab" aria-selected="false" id="tab-btn-wisdom">
+          <span>🎓 Senior Wisdom & Experience Hub</span>
+          <span class="badge-count">Life Archive</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Views Container -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- =========================================================================
+           FEATURE 1: Emergency Helpboard
+           ========================================================================= -->
+      <section id="tab-pane-sos" class="tab-pane active" role="tabpanel" aria-labelledby="tab-btn-sos">
+        <div class="view-header">
+          <div class="view-header-content">
+            <h1>Emergency Helpboard</h1>
+            <p>Real-time peer assistance for scooter breakdowns, lost items, urgent study advice, and general campus mutual aid across Shoufeng and Dong Hwa campus.</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-toggle-sos-form" class="btn btn-danger">
+              🚨 Ask for Emergency Help
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Submission Form: Ask for Emergency Help -->
+        <div id="sos-interactive-form-card" class="interactive-form-card highlight-border">
+          <div class="interactive-form-header" id="sos-form-header" onclick="document.getElementById('btn-toggle-sos-form').click()">
+            <h3>🚨 Ask for Emergency Help (Post a New Request)</h3>
+            <span style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">Click to Expand/Collapse</span>
+          </div>
+          <div id="sos-form-body" class="interactive-form-body collapsed">
+            <form id="form-ask-emergency">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <!-- Category Field -->
+                <div class="form-group">
+                  <label class="form-label" for="sos-category">Category <span class="required">*</span></label>
+                  <select id="sos-category" name="category" class="form-select" required>
+                    <option value="Scooter Breakdown">🛵 Scooter Breakdown (機車拋錨/爆胎)</option>
+                    <option value="Item Lost">🔍 Item Lost (遺失物協尋)</option>
+                    <option value="Urgent Study Advice">📚 Urgent Study Advice (緊急課業/考試求助)</option>
+                    <option value="General Help">🆘 General Help (一般生活協助)</option>
+                  </select>
+                </div>
+
+                <!-- Location near NDHU Field -->
+                <div class="form-group">
+                  <label class="form-label" for="sos-location">Location near NDHU <span class="required">*</span></label>
+                  <input type="text" id="sos-location" name="location" class="form-input" placeholder="e.g. Zhixue Gate, Dorm 1 courtyard, Library Lake, Gym" required>
+                </div>
+              </div>
+
+              <!-- Contact Info / Telegram handle Field -->
+              <div class="form-group">
+                <label class="form-label" for="sos-contactInfo">Contact Info / Telegram handle <span class="required">*</span></label>
+                <input type="text" id="sos-contactInfo" name="contactInfo" class="form-input" placeholder="e.g. Telegram: @username or Phone/Line ID" required>
+                <p class="form-help">Fellow students will use this handle to contact you immediately for mutual aid.</p>
+              </div>
+
+              <!-- Optional Title Field -->
+              <div class="form-group">
+                <label class="form-label" for="sos-title">Request Summary (Title)</label>
+                <input type="text" id="sos-title" name="title" class="form-input" placeholder="e.g. Rear tire puncture near Gate 2 bicycle rack">
+              </div>
+
+              <!-- Description Field -->
+              <div class="form-group">
+                <label class="form-label" for="sos-description">Details & Help Needed <span class="required">*</span></label>
+                <textarea id="sos-description" name="description" class="form-textarea" rows="3" placeholder="Describe the issue, what tools you need (hand pump, jumper cables, umbrella), and how fellow students can identify you..." required></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('btn-toggle-sos-form').click()">Cancel</button>
+                <button type="submit" class="btn btn-danger">🚨 Submit Emergency Help Request</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="controls-bar">
+          <div style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%;">
+            <!-- Category Filter Pills -->
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+              <div class="filter-pills" id="sos-category-filters" role="group" aria-label="Filter by Category">
+                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Category:</span>
+                <button class="pill-filter active" data-category="All">All Categories</button>
+                <button class="pill-filter" data-category="Scooter Breakdown">🛵 Scooter Breakdown</button>
+                <button class="pill-filter" data-category="Item Lost">🔍 Item Lost</button>
+                <button class="pill-filter" data-category="Urgent Study Advice">📚 Urgent Study Advice</button>
+                <button class="pill-filter" data-category="General Help">🆘 General Help</button>
+              </div>
+
+              <!-- Search Bar -->
+              <div class="search-box">
+                <span>🔍</span>
+                <input type="text" id="sos-search-input" placeholder="Search location (e.g. Zhixue Gate, Dorm 2)..." aria-label="Search emergency requests">
+              </div>
+            </div>
+
+            <!-- Urgency Filter Pills -->
+            <div class="filter-pills" id="sos-urgency-filters" role="group" aria-label="Filter by Urgency Tag">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Urgency Status:</span>
+              <button class="pill-filter active" data-urgency="All">All Statuses</button>
+              <button class="pill-filter" data-urgency="Urgent">🚨 Urgent</button>
+              <button class="pill-filter" data-urgency="In Progress">⏳ In Progress</button>
+              <button class="pill-filter" data-urgency="Resolved">✅ Resolved</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic List of Mock Emergency Cards -->
+        <div id="sos-cards-grid" class="grid-cards">
+          <!-- Populated dynamically by js/sos.js with Urgency tags -->
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           FEATURE 2: Campus Food & Dish Reviews
+           ========================================================================= -->
+      <section id="tab-pane-food" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-food">
+        <div class="view-header">
+          <div class="view-header-content">
+            <h1>Campus Food & Dish Reviews</h1>
+            <p>Explore popular eateries near NDHU with filter tags (Near Main Gate, Zhixue Street, Shoufeng Town), student ratings, and specific recommended dishes.</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-food-roulette" class="btn btn-outline">
+              🎲 What to Eat Today? (Random Pick)
+            </button>
+            <button id="btn-toggle-food-form" class="btn btn-primary">
+              🍱 Add Restaurant Review
+            </button>
+          </div>
+        </div>
+
+        <!-- Review Submission Form -->
+        <div id="food-interactive-form-card" class="interactive-form-card">
+          <div class="interactive-form-header" id="food-form-header" onclick="document.getElementById('btn-toggle-food-form').click()">
+            <h3>🍱 Submit a Restaurant & Dish Review</h3>
+            <span style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">Click to Expand/Collapse</span>
+          </div>
+          <div id="food-form-body" class="interactive-form-body collapsed">
+            <form id="form-submit-food-review">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                <!-- Restaurant Name Field -->
+                <div class="form-group">
+                  <label class="form-label" for="food-restaurant-name">Restaurant Name <span class="required">*</span></label>
+                  <input type="text" id="food-restaurant-name" name="restaurantName" class="form-input" placeholder="e.g. 志學美味炒飯 (Zhixue Delicious Fried Rice)" required>
+                </div>
+
+                <!-- Filter Tag / Location Field -->
+                <div class="form-group">
+                  <label class="form-label" for="food-filter-tag">Location Area Tag <span class="required">*</span></label>
+                  <select id="food-filter-tag" name="filterTag" class="form-select" required>
+                    <option value="Zhixue Street">Zhixue Street (志學街)</option>
+                    <option value="Near Main Gate">Near Main Gate (大學路/校內學餐)</option>
+                    <option value="Shoufeng Town">Shoufeng Town (壽豐火車站/市區)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <!-- Recommended Dish Field -->
+                <div class="form-group">
+                  <label class="form-label" for="food-recommended-dish">Recommended Dish <span class="required">*</span></label>
+                  <input type="text" id="food-recommended-dish" name="recommendedDish" class="form-input" placeholder="e.g. Shredded Pork Fried Rice with extra garlic and chili" required>
+                </div>
+
+                <!-- Price Range Field -->
+                <div class="form-group">
+                  <label class="form-label" for="food-price-range">Price Range</label>
+                  <input type="text" id="food-price-range" name="priceRange" class="form-input" placeholder="e.g. $ (NT$ 65 - 100)">
+                </div>
+              </div>
+
+              <!-- Rating (1-5 stars) Field -->
+              <div class="form-group">
+                <label class="form-label">Rating (1-5 stars) <span class="required">*</span></label>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                  <div class="star-rating-selector" id="star-selector" role="radiogroup" aria-label="Select star rating">
+                    <button type="button" class="star-btn active" data-value="1" aria-label="1 star">★</button>
+                    <button type="button" class="star-btn active" data-value="2" aria-label="2 stars">★</button>
+                    <button type="button" class="star-btn active" data-value="3" aria-label="3 stars">★</button>
+                    <button type="button" class="star-btn active" data-value="4" aria-label="4 stars">★</button>
+                    <button type="button" class="star-btn active" data-value="5" aria-label="5 stars">★</button>
+                  </div>
+                  <input type="hidden" id="food-rating-value" name="rating" value="5">
+                  <span id="star-rating-text" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">5 Stars</span>
+                </div>
+              </div>
+
+              <!-- Student Review Field -->
+              <div class="form-group">
+                <label class="form-label" for="food-student-review">Student Review <span class="required">*</span></label>
+                <textarea id="food-student-review" name="studentReview" class="form-textarea" rows="3" placeholder="Share your experience: portion size, flavors, student discount, wait time..." required></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('btn-toggle-food-form').click()">Cancel</button>
+                <button type="submit" class="btn btn-primary">🍱 Publish Restaurant Review</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Filter Tags & Search Controls -->
+        <div class="controls-bar">
+          <div class="filter-pills" id="food-filter-tags" role="group" aria-label="Filter eateries by location tag">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Location Filter:</span>
+            <button class="pill-filter active" data-tag="All">All Locations</button>
+            <button class="pill-filter" data-tag="Near Main Gate">🏫 Near Main Gate</button>
+            <button class="pill-filter" data-tag="Zhixue Street">🍜 Zhixue Street</button>
+            <button class="pill-filter" data-tag="Shoufeng Town">🍧 Shoufeng Town</button>
+          </div>
+
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="food-search-input" placeholder="Search dishes, eateries, or reviews..." aria-label="Search food reviews">
+          </div>
+        </div>
+
+        <!-- Food Directory Cards Grid -->
+        <div id="food-cards-grid" class="grid-cards">
+          <!-- Populated dynamically with 3 pre-populated realistic reviews by js/food.js -->
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           FEATURE 3: Senior Wisdom & Experience Hub
+           ========================================================================= -->
+      <section id="tab-pane-wisdom" class="tab-pane" role="tabpanel" aria-labelledby="tab-btn-wisdom">
+        <div class="view-header">
+          <div class="view-header-content">
+            <h1>Senior Wisdom & Experience Hub</h1>
+            <p>An advice and survival archive categorized by topics (General Life, Dorm Tips, Recommended Electives, Club Life) written by upperclassmen.</p>
+          </div>
+          <div class="view-header-actions">
+            <button id="btn-filter-bookmarked" class="btn btn-outline" title="Show only bookmarked wisdom">
+              🔖 Saved Bookmarks
+            </button>
+            <button id="btn-toggle-wisdom-form" class="btn btn-primary">
+              🎓 Share Senior Advice
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Advice Submission Form -->
+        <div id="wisdom-interactive-form-card" class="interactive-form-card">
+          <div class="interactive-form-header" id="wisdom-form-header" onclick="document.getElementById('btn-toggle-wisdom-form').click()">
+            <h3>🎓 Post Senior Advice or Campus Experience</h3>
+            <span style="font-size: 0.85rem; color: var(--primary); font-weight: 600;">Click to Expand/Collapse</span>
+          </div>
+          <div id="wisdom-form-body" class="interactive-form-body collapsed">
+            <form id="form-submit-senior-wisdom">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label class="form-label" for="wisdom-post-title">Advice Title <span class="required">*</span></label>
+                  <input type="text" id="wisdom-post-title" name="title" class="form-input" placeholder="e.g. Best general education electives & how to get add-codes" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="wisdom-topic">Topic Category <span class="required">*</span></label>
+                  <select id="wisdom-topic" name="topic" class="form-select" required>
+                    <option value="General Life">🌿 General Life (生活體驗/花蓮生存)</option>
+                    <option value="Dorm Tips">🏠 Dorm Tips (宿舍防潮/生活技巧)</option>
+                    <option value="Recommended Electives">🎓 Recommended Electives (推薦選課/加簽)</option>
+                    <option value="Club Life">🎭 Club Life (社團生活/活動經驗)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="wisdom-author-role">Upperclassman Role / Mentor Title</label>
+                <input type="text" id="wisdom-author-role" name="authorRole" class="form-input" placeholder="e.g. Senior CS Major, Dorm Resident Mentor, Campus Safety Ambassador">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="wisdom-summary">Brief Summary (Key Takeaway) <span class="required">*</span></label>
+                <input type="text" id="wisdom-summary" name="summary" class="form-input" placeholder="One sentence summarizing your core insight..." required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="wisdom-content">Detailed Advice & Practical Steps <span class="required">*</span></label>
+                <textarea id="wisdom-content" name="content" class="form-textarea" rows="5" placeholder="Share your step-by-step guidance, recommendations, or common pitfalls to avoid..." required></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('btn-toggle-wisdom-form').click()">Cancel</button>
+                <button type="submit" class="btn btn-primary">🎓 Publish to Archive</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div class="controls-bar">
+          <!-- Topic Filter Pills -->
+          <div class="filter-pills" id="wisdom-topic-filters" role="group" aria-label="Filter wisdom by topic">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Topics:</span>
+            <button class="pill-filter active" data-topic="All">All Topics</button>
+            <button class="pill-filter" data-topic="General Life">🌿 General Life</button>
+            <button class="pill-filter" data-topic="Dorm Tips">🏠 Dorm Tips</button>
+            <button class="pill-filter" data-topic="Recommended Electives">🎓 Recommended Electives</button>
+            <button class="pill-filter" data-topic="Club Life">🎭 Club Life</button>
+          </div>
+
+          <!-- Search Bar to filter senior advice posts -->
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="wisdom-search-input" placeholder="Search advice by keyword or topic..." aria-label="Search senior advice posts">
+          </div>
+        </div>
+
+        <!-- Senior Wisdom Cards Grid -->
+        <div id="wisdom-cards-grid" class="grid-cards">
+          <!-- Populated dynamically with 3 pre-populated helpful advice posts by js/wisdom.js -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- Modal: View Senior Wisdom Full Guide -->
+  <div id="modal-view-wisdom" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="wisdom-modal-title">
+    <div class="modal-window" style="max-width: 680px;">
+      <div class="modal-header">
+        <h2 id="wisdom-modal-title" class="modal-title">Campus Guide</h2>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div id="wisdom-modal-content" class="modal-body">
+        <!-- Rendered by js/wisdom.js -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-modal-cancel">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Food Roulette Random Picker -->
+  <div id="modal-food-roulette" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-roulette-title">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h2 id="modal-roulette-title" class="modal-title">🎲 What to Eat Today? (今天吃什麼)</h2>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body roulette-container">
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          Stuck on where to eat near NDHU? Let the Food Roulette randomly pick from student favorites!
+        </p>
+        <div id="roulette-result-display" class="roulette-display">
+          <!-- Filled dynamically by js/food.js -->
+        </div>
+        <button id="btn-spin-again" class="btn btn-primary" onclick="FoodController.spinRoulette()">
+          🎲 Spin Again!
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-modal-cancel">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       AI CAMPUS ASSISTANT (Interactive Floating Bot)
+       ========================================================================= -->
+  <button id="ai-assistant-toggle" class="ai-assistant-toggle" aria-label="Open NDHU AI Campus Assistant">
+    <span>🤖 NDHU AI Guide</span>
+  </button>
+
+  <div id="ai-assistant-panel" class="ai-assistant-panel" role="region" aria-label="NDHU AI Chat Assistant">
+    <div class="ai-panel-header">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.25rem;">🤖</span>
+        <div>
+          <strong style="display: block; font-size: 0.95rem;">NDHU Smart Campus Bot</strong>
+          <span style="font-size: 0.72rem; opacity: 0.9;">AI Midterm Campus Knowledge Base</span>
+        </div>
+      </div>
+      <button id="ai-panel-close" class="modal-close-btn" style="color: #fff;" aria-label="Close Assistant">&times;</button>
+    </div>
+
+    <div id="ai-chat-messages" class="ai-chat-messages">
+      <div class="chat-bubble bot">
+        👋 Hello! I am your <strong>NDHU AI Campus Assistant</strong>. Ask me anything about scooter breakdown mutual help, Zhixue street eateries, recommended electives, or dorm moisture solutions!
+      </div>
+    </div>
+
+    <div class="quick-prompts">
+      <button class="quick-prompt-btn">🛵 Scooter flat tire help</button>
+      <button class="quick-prompt-btn">🍜 Recommend supper spot</button>
+      <button class="quick-prompt-btn">🦟 How to stop biting midges</button>
+      <button class="quick-prompt-btn">🎓 Add/drop course advice</button>
+    </div>
+
+    <div class="ai-input-bar">
+      <input type="text" id="ai-user-input" placeholder="Ask about campus life, eateries, SOS..." aria-label="Ask AI Assistant">
+      <button id="ai-send-btn" class="btn btn-sm btn-primary">Send</button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       APPLICATION FOOTER
+       ========================================================================= -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <strong style="font-size: 1rem; color: var(--text-main); display: block; margin-bottom: 0.25rem;">
+            NDHU Hub • National Dong Hwa University Student Mutual Aid Network
+          </strong>
+          <span style="font-size: 0.82rem;">Designed for Shoufeng campus residents, commuters, and international students.</span>
+        </div>
+        <div style="display: flex; gap: 1rem; font-size: 0.82rem;">
+          <span>AI Midterm Project</span>
+          <span>•</span>
+          <span>No Personal Data Stored</span>
+          <span>•</span>
+          <span>Modern Responsive Web App</span>
+        </div>
+      </div>
+      <p class="footer-disclaimer">
+        Disclaimer: This web application is an educational AI midterm project developed for National Dong Hwa University (NDHU) campus life exploration. No personal names or student IDs are used or stored.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/sos.js"></script>
+  <script src="js/food.js"></script>
+  <script src="js/wisdom.js"></script>
+  <script src="js/ai-assistant.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
