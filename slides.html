@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NDHU Hub Presentation - 11/02 Class Presentation</title>
+  <style>
+    :root {
+      --primary: #1b365d;
+      --primary-dark: #0f233d;
+      --accent-blue: #1d4ed8;
+      --accent-emerald: #006548;
+      --accent-coral: #dc2626;
+      --accent-amber: #d97706;
+      --bg: #0b1120;
+      --slide-bg: #131c31;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #223253;
+      --card-bg: rgba(27, 54, 93, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+
+    /* Presentation Header */
+    .deck-header {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .deck-title {
+      font-weight: 700;
+      color: #93c5fd;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Slide Stage */
+    .slide-stage {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      min-height: 540px;
+      background: var(--slide-bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 2.5rem 3rem;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Slide Typography */
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(29, 78, 216, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(29, 78, 216, 0.4);
+      width: fit-content;
+      margin-bottom: 0.5rem;
+    }
+
+    .slide-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Grid Layouts inside slides */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: #ffffff;
+    }
+
+    .card-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .card-highlight {
+      margin-top: auto;
+      padding-top: 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #60a5fa;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    /* Slide Footer Controls */
+    .deck-controls {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .btn-nav {
+      background: var(--slide-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      background: var(--primary);
+      border-color: #3b82f6;
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: #3b82f6;
+      width: 24px;
+      border-radius: 9999px;
+    }
+
+    /* Speaker Notes Drawer */
+    .notes-panel {
+      width: 100%;
+      max-width: 1000px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      display: none;
+    }
+
+    .notes-panel.open {
+      display: block;
+    }
+
+    .notes-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .notes-content {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.75rem 1rem;
+      border-left: 3px solid #3b82f6;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .slide-stage {
+        aspect-ratio: auto;
+        min-height: auto;
+      }
+      .slide {
+        position: relative;
+        padding: 1.5rem;
+      }
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .slide-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="deck-header">
+    <div class="deck-title">
+      <span>🏫</span>
+      <strong>NDHU Hub • In-Class Presentation (11/02)</strong>
+    </div>
+    <div id="slide-indicator">Slide 1 of 3</div>
+  </div>
+
+  <!-- Stage -->
+  <main class="slide-stage" id="stage">
+    
+    <!-- SLIDE 1 -->
+    <section class="slide active" id="slide-1">
+      <div>
+        <div class="slide-badge">Slide 1: Problem & Concept</div>
+        <h1 class="slide-title">Life on a 251-Hectare Valley Campus</h1>
+        <p class="slide-subtitle">Why NDHU Students Need a Centralized, Responsive Mutual Aid & Life Hub</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid var(--accent-coral);">
+          <div class="card-icon">🛵</div>
+          <h3 class="card-title">Highway & Breakdown Hazards</h3>
+          <p class="card-text">Daily scooter commuting across Provincial Highway 9 & 11C leaves students vulnerable to tire punctures and battery drain far from town garages.</p>
+          <div class="card-highlight">Pain: No instant peer assistance channel</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid var(--accent-amber);">
+          <div class="card-icon">🌧️</div>
+          <h3 class="card-title">Valley Climate & Humidity</h3>
+          <p class="card-text">Shoufeng encounters sudden downpours and 85–95% indoor humidity. Freshmen face mold damage and biting midges without warning.</p>
+          <div class="card-highlight">Pain: Environmental survival learning curve</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid var(--accent-emerald);">
+          <div class="card-icon">🗺️</div>
+          <h3 class="card-title">Scattered Campus Knowledge</h3>
+          <p class="card-text">Dining deals, add/drop registration etiquette, and exam survival tips remain fragmented across LINE groups and expiring Facebook posts.</p>
+          <div class="card-highlight">Solution: Centralized NDHU Hub Portal</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+        <span>National Dong Hwa University • Introduction to AI Midterm</span>
+        <span>Press <strong>→</strong> or <strong>Space</strong> for Next Slide</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2 -->
+    <section class="slide" id="slide-2">
+      <div>
+        <div class="slide-badge" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4);">Slide 2: Key Features & Demo</div>
+        <h1 class="slide-title">Three Core Pillars + AI Assistant</h1>
+        <p class="slide-subtitle">Engineered for Rapid Response, Local Discovery, and Senior Wisdom</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid var(--accent-coral);">
+          <div class="card-icon">🚨</div>
+          <h3 class="card-title">Emergency Helpboard</h3>
+          <p class="card-text">Interactive form with real-time status tracking (<strong>Urgent</strong>, <strong>In Progress</strong>, <strong>Resolved</strong>), Telegram handles, and quick campus hotlines.</p>
+          <div class="card-highlight">Demo: One-click "I Can Help!" mutual aid</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid var(--accent-amber);">
+          <div class="card-icon">🍜</div>
+          <h3 class="card-title">Food & Reviews Hub</h3>
+          <p class="card-text">Zonal directory (Near Main Gate, Zhixue Street, Shoufeng Town) highlighting signature "Must Try Dishes", 1–5 stars, and a Random Food Roulette.</p>
+          <div class="card-highlight">Demo: "What to Eat Today?" shuffle wheel</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #6366f1);">
+          <div class="card-icon">🎓</div>
+          <h3 class="card-title">Wisdom & AI Guide</h3>
+          <p class="card-text">Dorm humidity control, course add-code etiquette, biting midges defense, search filter, offline bookmarks, and embedded AI Campus Bot.</p>
+          <div class="card-highlight">Demo: Natural language query assistance</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+        <span>Live Web App Demo Ready: index.html</span>
+        <span>Repository: github.com/ndhuAkshit/ndhu-hub</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3 -->
+    <section class="slide" id="slide-3">
+      <div>
+        <div class="slide-badge" style="background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.4);">Slide 3: Impact & AI Workflow</div>
+        <h1 class="slide-title">Human-AI Co-Creation & Future Scope</h1>
+        <p class="slide-subtitle">How AI Assisted in Architecture, Testing, and Academic Compliance</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid #8b5cf6);">
+          <div class="card-icon">🤖</div>
+          <h3 class="card-title">Agentic AI Workflow</h3>
+          <p class="card-text">Collaborative iterative prompting with Google Antigravity: architecture formulation, mobile-responsive CSS grid system, and local state management.</p>
+          <div class="card-highlight">Method: Iterative human guidance + AI execution</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #06b6d4);">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">Rigorous Verification</h3>
+          <p class="card-text">Automated Node.js testing: 100% DOM element ID synchronization, syntax checks (<code>node -c</code>), and regex privacy compliance (0 student IDs stored).</p>
+          <div class="card-highlight">Quality: Zero external dependencies, 100% offline</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid var(--accent-emerald);">
+          <div class="card-icon">🚀</div>
+          <h3 class="card-title">Next Steps & Vision</h3>
+          <p class="card-text">WebSocket push notifications for instant SOS broadcasts, Leaflet.js interactive GIS campus mapping, and bilingual EN/ZH localization.</p>
+          <div class="card-highlight">Impact: Empowering 10,000+ NDHU students</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+        <span>Thank you! Questions & Discussion</span>
+        <span>Hosted on GitHub • Open for Student Contributions</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Controls -->
+  <div class="deck-controls">
+    <button class="btn-nav" id="btn-prev" onclick="prevSlide()" disabled>← Previous</button>
+    
+    <div class="slide-dots">
+      <div class="dot active" onclick="goToSlide(1)"></div>
+      <div class="dot" onclick="goToSlide(2)"></div>
+      <div class="dot" onclick="goToSlide(3)"></div>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem;">
+      <button class="btn-nav" onclick="toggleNotes()">🎤 Speaker Notes</button>
+      <button class="btn-nav" id="btn-next" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <!-- Speaker Notes Box -->
+  <div class="notes-panel" id="notes-panel">
+    <div class="notes-title">
+      <span>📝</span>
+      <span id="notes-label">Speaker Notes for Slide 1</span>
+    </div>
+    <div class="notes-content" id="notes-text">
+      "Good morning professor and fellow classmates. As NDHU students living here in Shoufeng, we all appreciate the beauty of our 251-hectare campus. However, its rural valley location creates real daily hassles: roadside scooter breakdowns on Highway 9 or 11C, sudden downpours with 90%+ humidity, and fragmented dining or course advice. That is why I built NDHU Hub — a centralized, private, mobile-first student mutual aid network."
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 3;
+
+    const speakerNotes = {
+      1: `"Good morning professor and fellow classmates. As NDHU students living here in Shoufeng, we all appreciate the beauty of our 251-hectare campus. However, its rural valley location creates real daily hassles: roadside scooter breakdowns on Highway 9 or 11C, sudden downpours with 90%+ humidity, and fragmented dining or course advice. That is why I built NDHU Hub — a centralized, private, mobile-first student mutual aid network."`,
+      2: `"NDHU Hub has three interactive pillars, which I will now demonstrate. First, our Emergency Helpboard: students can post requests with landmarks and Telegram handles, and peers can click 'I Can Help!' to update urgency in real time. Second, our Food Directory highlights student budget favorites with signature 'Must Try Dish' badges and a random roulette for lunch indecision. Third, our Senior Wisdom archive shares battle-tested tips on dorm humidity, course lotteries, and biting midges, backed by an embedded AI Campus Bot."`,
+      3: `"To build this project, I used an agentic AI pair-programming workflow with Google DeepMind's Antigravity. By applying structured iterative prompts, we created a lightweight, zero-dependency web app with dark mode, verified 100% DOM synchronization through automated Node.js tests, and guaranteed strict student privacy. Looking forward, we plan to add WebSocket push notifications and interactive GIS mapping. Thank you, and I welcome any questions!"`
+    };
+
+    function updateSlide() {
+      document.querySelectorAll('.slide').forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.querySelectorAll('.dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx + 1 === currentSlide);
+      });
+
+      document.getElementById('slide-indicator').textContent = `Slide ${currentSlide} of ${totalSlides}`;
+      document.getElementById('btn-prev').disabled = (currentSlide === 1);
+      document.getElementById('btn-next').disabled = (currentSlide === totalSlides);
+
+      document.getElementById('notes-label').textContent = `Speaker Notes for Slide ${currentSlide}`;
+      document.getElementById('notes-text').textContent = speakerNotes[currentSlide];
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      updateSlide();
+    }
+
+    function toggleNotes() {
+      const panel = document.getElementById('notes-panel');
+      panel.classList.toggle('open');
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 's' || e.key === 'S') {
+        toggleNotes();
+      }
+    });
+  </script>
+</body>
+</html>
