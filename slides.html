@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NDHU Hub Presentation - 11/02 Class Presentation</title>
+  <title>NDHU Hub Presentation - National Dong Hwa University</title>
   <style>
     :root {
       --primary: #1b365d;
-      --primary-dark: #0f233d;
-      --accent-blue: #1d4ed8;
-      --accent-emerald: #006548;
-      --accent-coral: #dc2626;
-      --accent-amber: #d97706;
-      --bg: #0b1120;
-      --slide-bg: #131c31;
+      --primary-dark: #0a1120;
+      --primary-card: #131c31;
+      --border: #223253;
+      --border-highlight: #3b82f6;
+      
+      --accent-blue: #3b82f6;
+      --accent-emerald: #10b981;
+      --accent-coral: #ef4444;
+      --accent-amber: #f59e0b;
+      --accent-purple: #8b5cf6;
+
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: #223253;
-      --card-bg: rgba(27, 54, 93, 0.35);
+      --text-dim: #64748b;
     }
 
     * {
@@ -28,47 +31,81 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      background: var(--primary-dark);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow-x: hidden;
       padding: 1rem;
+      overflow-x: hidden;
+      user-select: none;
     }
 
-    /* Presentation Header */
+    /* Top Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b);
+      width: 16.66%;
+      transition: width 0.3s ease;
+    }
+
+    /* Deck Header */
     .deck-header {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1080px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 0;
+      padding: 0.6rem 0;
       font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    .deck-title {
-      font-weight: 700;
-      color: #93c5fd;
+    .deck-brand {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-weight: 700;
+      color: #93c5fd;
+    }
+
+    .deck-brand-badge {
+      background: linear-gradient(135deg, #1b365d, #10b981);
+      color: white;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .deck-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
     /* Slide Stage */
     .slide-stage {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1080px;
       aspect-ratio: 16 / 9;
-      min-height: 540px;
-      background: var(--slide-bg);
+      min-height: 560px;
+      background: var(--primary-card);
       border: 1px solid var(--border);
       border-radius: 18px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
       position: relative;
       overflow: hidden;
       display: flex;
@@ -78,13 +115,13 @@
     .slide {
       position: absolute;
       inset: 0;
-      padding: 2.5rem 3rem;
+      padding: 2.25rem 2.85rem;
       display: none;
       flex-direction: column;
       justify-content: space-between;
       opacity: 0;
-      transform: translateX(40px);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateX(35px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .slide.active {
@@ -93,148 +130,396 @@
       transform: translateX(0);
     }
 
-    /* Slide Typography */
+    /* Typography */
     .slide-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.3rem 0.75rem;
+      padding: 0.25rem 0.75rem;
       border-radius: 9999px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: rgba(29, 78, 216, 0.2);
+      background: rgba(59, 130, 246, 0.15);
       color: #93c5fd;
-      border: 1px solid rgba(29, 78, 216, 0.4);
+      border: 1px solid rgba(59, 130, 246, 0.35);
       width: fit-content;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
     .slide-title {
-      font-size: 2.1rem;
+      font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.2;
       color: #ffffff;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.25rem;
     }
 
     .slide-subtitle {
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: var(--text-muted);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
-    /* Grid Layouts inside slides */
+    /* Grid Layouts */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      gap: 1.15rem;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
       flex: 1;
       align-items: stretch;
     }
 
     .card {
-      background: var(--card-bg);
+      background: rgba(27, 54, 93, 0.25);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.25rem;
+      padding: 1.2rem;
       display: flex;
       flex-direction: column;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(96, 165, 250, 0.5);
+      transform: translateY(-2px);
     }
 
     .card-icon {
-      font-size: 2rem;
-      margin-bottom: 0.65rem;
+      font-size: 1.85rem;
+      margin-bottom: 0.5rem;
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
       color: #ffffff;
     }
 
     .card-text {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
     .card-highlight {
       margin-top: auto;
-      padding-top: 0.75rem;
-      font-size: 0.78rem;
+      padding-top: 0.65rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      color: #60a5fa;
       border-top: 1px dashed rgba(255, 255, 255, 0.1);
     }
 
-    /* Slide Footer Controls */
-    .deck-controls {
-      width: 100%;
-      max-width: 1000px;
+    /* Interactive Simulation Widgets */
+    .interactive-simulator {
+      background: rgba(11, 17, 32, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .sim-header {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #93c5fd;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sim-live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.7rem;
+      color: #ef4444;
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Live Interactive SOS Card inside Slide 3 */
+    .live-sos-card {
+      background: var(--primary-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid #ef4444;
+      border-radius: 8px;
+      padding: 0.9rem;
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .live-sos-card.status-helping {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .status-pill {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    .status-urgent-pill {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .status-helping-pill {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    /* Interactive Food Roulette inside Slide 4 */
+    .roulette-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 2px dashed #3b82f6;
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .roulette-dish-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #f59e0b;
+      margin: 0.4rem 0 0.2rem;
+    }
+
+    .roulette-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Interactive AI Chat inside Slide 5 */
+    .ai-chat-window {
+      background: rgba(11, 17, 32, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .bubble {
+      max-width: 88%;
+      padding: 0.6rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .bubble-bot {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.9);
+      color: #f1f5f9;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .bubble-user {
+      align-self: flex-end;
+      background: #1b365d;
+      color: #ffffff;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+
+    .ai-quick-prompts {
+      display: flex;
+      gap: 0.35rem;
+      padding: 0.45rem 0.75rem;
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .quick-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .quick-chip:hover {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border-color: #3b82f6;
+    }
+
+    .ai-chat-input-bar {
+      display: flex;
+      gap: 0.4rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid var(--border);
+    }
+
+    .ai-chat-input-bar input {
+      flex: 1;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--border);
+      color: white;
+      padding: 0.4rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #1d4ed8;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-amber {
+      background: #f59e0b;
+      color: #0f172a;
+    }
+
+    .btn-amber:hover {
+      background: #d97706;
+      color: white;
+    }
+
+    /* Slide Controls */
+    .deck-controls {
+      width: 100%;
+      max-width: 1080px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.85rem;
     }
 
     .btn-nav {
-      background: var(--slide-bg);
+      background: var(--primary-card);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.65rem 1.25rem;
+      padding: 0.55rem 1.15rem;
       border-radius: 8px;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       transition: all 0.2s;
     }
 
     .btn-nav:hover:not(:disabled) {
-      background: var(--primary);
+      background: #1b365d;
       border-color: #3b82f6;
     }
 
     .btn-nav:disabled {
-      opacity: 0.4;
+      opacity: 0.35;
       cursor: not-allowed;
     }
 
     .slide-dots {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--border);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
     }
 
     .dot.active {
       background: #3b82f6;
-      width: 24px;
+      width: 26px;
       border-radius: 9999px;
     }
 
-    /* Speaker Notes Drawer */
+    /* Speaker Notes Box */
     .notes-panel {
       width: 100%;
-      max-width: 1000px;
+      max-width: 1080px;
       background: #0f172a;
       border: 1px solid var(--border);
       border-radius: 12px;
-      margin-top: 1rem;
-      padding: 1rem 1.25rem;
+      margin-top: 0.85rem;
+      padding: 0.9rem 1.2rem;
       display: none;
     }
 
@@ -243,18 +528,18 @@
     }
 
     .notes-title {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
       color: #94a3b8;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
       display: flex;
       align-items: center;
       gap: 0.4rem;
     }
 
     .notes-content {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.6;
       color: #e2e8f0;
       background: rgba(255, 255, 255, 0.03);
@@ -263,149 +548,355 @@
       border-radius: 4px;
     }
 
-    @media (max-width: 768px) {
-      .slide-stage {
-        aspect-ratio: auto;
-        min-height: auto;
-      }
-      .slide {
-        position: relative;
-        padding: 1.5rem;
-      }
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-      .slide-title {
-        font-size: 1.5rem;
-      }
+    /* Toast */
+    .slide-toast {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #10b981;
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+    }
+
+    .slide-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
   <!-- Header -->
   <div class="deck-header">
-    <div class="deck-title">
-      <span>🏫</span>
-      <strong>NDHU Hub • In-Class Presentation (11/02)</strong>
+    <div class="deck-brand">
+      <span class="deck-brand-badge">東</span>
+      <span>NDHU Hub • National Dong Hwa University</span>
     </div>
-    <div id="slide-indicator">Slide 1 of 3</div>
+    <div class="deck-meta">
+      <span id="slide-indicator" style="font-weight: 700; color: #93c5fd;">Slide 1 of 6</span>
+      <button class="btn-nav" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+    </div>
   </div>
 
   <!-- Stage -->
   <main class="slide-stage" id="stage">
     
-    <!-- SLIDE 1 -->
+    <!-- =========================================================================
+         SLIDE 1: Title & University Vision
+         ========================================================================= -->
     <section class="slide active" id="slide-1">
       <div>
-        <div class="slide-badge">Slide 1: Problem & Concept</div>
-        <h1 class="slide-title">Life on a 251-Hectare Valley Campus</h1>
-        <p class="slide-subtitle">Why NDHU Students Need a Centralized, Responsive Mutual Aid & Life Hub</p>
+        <div class="slide-badge">Slide 1 • Project Overview</div>
+        <h1 class="slide-title">NDHU Hub: Campus Connect & Life Guide</h1>
+        <p class="slide-subtitle">國立東華大學 校園生活與即時互助平台 • AI Midterm Project</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid #3b82f6;">
+          <div class="card-icon">🏫</div>
+          <h3 class="card-title">251-Hectare Valley Campus</h3>
+          <p class="card-text">Situated in Shoufeng, Hualien between the Central Mountain Range and Coastal Range. Expansive rural geography creates real everyday student hurdles.</p>
+          <div class="card-highlight" style="color: #60a5fa;">📍 Shoufeng Township, Hualien</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #10b981;">
+          <div class="card-icon">🤝</div>
+          <h3 class="card-title">Three Core Pillars</h3>
+          <p class="card-text">1. Emergency Helpboard & SOS Mutual Aid<br>2. Campus Food Reviews & Roulette<br>3. Senior Wisdom & NDHU Life Archive</p>
+          <div class="card-highlight" style="color: #34d399;">✨ Centralized Student Portal</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #f59e0b;">
+          <div class="card-icon">⚡</div>
+          <h3 class="card-title">Engineering Discipline</h3>
+          <p class="card-text">Pure vanilla web stack (HTML5, CSS Grid, ES6+ JS). Zero external npm packages, runs 100% offline via LocalStorage with strict privacy compliance.</p>
+          <div class="card-highlight" style="color: #fbbf24;">🔒 Zero Student IDs Stored</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Course: Introduction to Artificial Intelligence (11/02 Presentation)</span>
+        <span>Press <strong>→</strong> or <strong>Space</strong> to navigate</span>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SLIDE 2: Campus Challenges & Real Pain Points
+         ========================================================================= -->
+    <section class="slide" id="slide-2">
+      <div>
+        <div class="slide-badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.35);">Slide 2 • Problem Statement</div>
+        <h1 class="slide-title">Three Everyday Campus Pain Points</h1>
+        <p class="slide-subtitle">Why Dong Hwa Students Need a Dedicated, Mobile-First Mutual Aid Network</p>
       </div>
 
       <div class="grid-3">
         <div class="card" style="border-top: 3px solid var(--accent-coral);">
           <div class="card-icon">🛵</div>
-          <h3 class="card-title">Highway & Breakdown Hazards</h3>
-          <p class="card-text">Daily scooter commuting across Provincial Highway 9 & 11C leaves students vulnerable to tire punctures and battery drain far from town garages.</p>
-          <div class="card-highlight">Pain: No instant peer assistance channel</div>
+          <h3 class="card-title">Highway Scooter Breakdowns</h3>
+          <p class="card-text">Daily student commuting across Highway 9 and 11-Bing. Flat tires, punctured treads, or dead batteries leave riders stranded miles from town garages.</p>
+          <div class="card-highlight" style="color: #f87171;">⚠️ Pain: No instant peer assistance channel</div>
         </div>
 
         <div class="card" style="border-top: 3px solid var(--accent-amber);">
           <div class="card-icon">🌧️</div>
-          <h3 class="card-title">Valley Climate & Humidity</h3>
-          <p class="card-text">Shoufeng encounters sudden downpours and 85–95% indoor humidity. Freshmen face mold damage and biting midges without warning.</p>
-          <div class="card-highlight">Pain: Environmental survival learning curve</div>
+          <h3 class="card-title">Valley Climate & 90%+ Humidity</h3>
+          <p class="card-text">Sudden afternoon downpours catch students without umbrellas. Relative humidity exceeds 85–95%, causing mold damage and biting midges (Forcipomyia taiwana).</p>
+          <div class="card-highlight" style="color: #fbbf24;">⚠️ Pain: Steep freshman survival learning curve</div>
         </div>
 
-        <div class="card" style="border-top: 3px solid var(--accent-emerald);">
-          <div class="card-icon">🗺️</div>
-          <h3 class="card-title">Scattered Campus Knowledge</h3>
-          <p class="card-text">Dining deals, add/drop registration etiquette, and exam survival tips remain fragmented across LINE groups and expiring Facebook posts.</p>
-          <div class="card-highlight">Solution: Centralized NDHU Hub Portal</div>
-        </div>
-      </div>
-
-      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-        <span>National Dong Hwa University • Introduction to AI Midterm</span>
-        <span>Press <strong>→</strong> or <strong>Space</strong> for Next Slide</span>
-      </div>
-    </section>
-
-    <!-- SLIDE 2 -->
-    <section class="slide" id="slide-2">
-      <div>
-        <div class="slide-badge" style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.4);">Slide 2: Key Features & Demo</div>
-        <h1 class="slide-title">Three Core Pillars + AI Assistant</h1>
-        <p class="slide-subtitle">Engineered for Rapid Response, Local Discovery, and Senior Wisdom</p>
-      </div>
-
-      <div class="grid-3">
-        <div class="card" style="border-top: 3px solid var(--accent-coral);">
-          <div class="card-icon">🚨</div>
-          <h3 class="card-title">Emergency Helpboard</h3>
-          <p class="card-text">Interactive form with real-time status tracking (<strong>Urgent</strong>, <strong>In Progress</strong>, <strong>Resolved</strong>), Telegram handles, and quick campus hotlines.</p>
-          <div class="card-highlight">Demo: One-click "I Can Help!" mutual aid</div>
-        </div>
-
-        <div class="card" style="border-top: 3px solid var(--accent-amber);">
-          <div class="card-icon">🍜</div>
-          <h3 class="card-title">Food & Reviews Hub</h3>
-          <p class="card-text">Zonal directory (Near Main Gate, Zhixue Street, Shoufeng Town) highlighting signature "Must Try Dishes", 1–5 stars, and a Random Food Roulette.</p>
-          <div class="card-highlight">Demo: "What to Eat Today?" shuffle wheel</div>
-        </div>
-
-        <div class="card" style="border-top: 3px solid #6366f1);">
-          <div class="card-icon">🎓</div>
-          <h3 class="card-title">Wisdom & AI Guide</h3>
-          <p class="card-text">Dorm humidity control, course add-code etiquette, biting midges defense, search filter, offline bookmarks, and embedded AI Campus Bot.</p>
-          <div class="card-highlight">Demo: Natural language query assistance</div>
+        <div class="card" style="border-top: 3px solid #8b5cf6;">
+          <div class="card-icon">💬</div>
+          <h3 class="card-title">Fragmented Knowledge & Chats</h3>
+          <p class="card-text">Dining deals, add/drop registration etiquette, and course lottery weighting algorithms remain lost inside dying Facebook posts and noisy LINE groups.</p>
+          <div class="card-highlight" style="color: #c084fc;">⚠️ Pain: Information evaporates every semester</div>
         </div>
       </div>
 
-      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-        <span>Live Web App Demo Ready: index.html</span>
-        <span>Repository: github.com/ndhuAkshit/ndhu-hub</span>
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Solution: NDHU Hub turns individual struggles into peer community solutions.</span>
+        <span>Slide 2 / 6</span>
       </div>
     </section>
 
-    <!-- SLIDE 3 -->
+    <!-- =========================================================================
+         SLIDE 3: Interactive Demo — Emergency Helpboard
+         ========================================================================= -->
     <section class="slide" id="slide-3">
       <div>
-        <div class="slide-badge" style="background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.4);">Slide 3: Impact & AI Workflow</div>
-        <h1 class="slide-title">Human-AI Co-Creation & Future Scope</h1>
-        <p class="slide-subtitle">How AI Assisted in Architecture, Testing, and Academic Compliance</p>
+        <div class="slide-badge" style="background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.35);">Slide 3 • Live Interactive Feature 1</div>
+        <h1 class="slide-title">Emergency Helpboard & Mutual Aid</h1>
+        <p class="slide-subtitle">Rapid Peer Assistance for Scooter Breakdowns, Downpours, and Lost Items</p>
       </div>
 
-      <div class="grid-3">
-        <div class="card" style="border-top: 3px solid #8b5cf6);">
-          <div class="card-icon">🤖</div>
-          <h3 class="card-title">Agentic AI Workflow</h3>
-          <p class="card-text">Collaborative iterative prompting with Google Antigravity: architecture formulation, mobile-responsive CSS grid system, and local state management.</p>
-          <div class="card-highlight">Method: Iterative human guidance + AI execution</div>
+      <div class="grid-2">
+        <!-- Feature Highlights -->
+        <div class="card" style="border-top: 3px solid var(--accent-coral);">
+          <h3 class="card-title" style="font-size: 1.15rem; margin-bottom: 0.6rem;">Key Technical Capabilities</h3>
+          <ul style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-left: 1.2rem;">
+            <li><strong>Interactive Request Submission:</strong> Category (Scooter Breakdown, Item Lost, Urgent Study Advice, General Help).</li>
+            <li><strong>Live Urgency Workflow:</strong> Exact tags for <code>Urgent 🚨</code>, <code>In Progress ⏳</code>, and <code>Resolved ✅</code>.</li>
+            <li><strong>Privacy-Safe Contact:</strong> Direct Telegram handle pill (<code>@username</code>) avoiding phone exposure.</li>
+            <li><strong>Campus Hotline Bar:</strong> One-click emergency calling to 24/7 Security, Police, and Health Clinic.</li>
+          </ul>
+          <div class="card-highlight" style="color: #f87171;">✨ Test the live interactive card on the right! 👉</div>
         </div>
 
-        <div class="card" style="border-top: 3px solid #06b6d4);">
-          <div class="card-icon">🧪</div>
-          <h3 class="card-title">Rigorous Verification</h3>
-          <p class="card-text">Automated Node.js testing: 100% DOM element ID synchronization, syntax checks (<code>node -c</code>), and regex privacy compliance (0 student IDs stored).</p>
-          <div class="card-highlight">Quality: Zero external dependencies, 100% offline</div>
-        </div>
+        <!-- Live Interactive Simulation Card -->
+        <div class="interactive-simulator">
+          <div class="sim-header">
+            <span>🚨 Live Interactive SOS Simulation</span>
+            <span class="sim-live-badge">● LIVE INTERACTIVE</span>
+          </div>
 
-        <div class="card" style="border-top: 3px solid var(--accent-emerald);">
-          <div class="card-icon">🚀</div>
-          <h3 class="card-title">Next Steps & Vision</h3>
-          <p class="card-text">WebSocket push notifications for instant SOS broadcasts, Leaflet.js interactive GIS campus mapping, and bilingual EN/ZH localization.</p>
-          <div class="card-highlight">Impact: Empowering 10,000+ NDHU students</div>
+          <div class="live-sos-card" id="demo-sos-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+              <span class="status-pill status-urgent-pill" id="demo-sos-status">🚨 Urgent</span>
+              <span style="font-size: 0.72rem; color: var(--text-dim);">12 mins ago</span>
+            </div>
+            <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem;">Scooter flat tire near Zhixue Gate (Gate 2)</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              📍 Zhixue Gate bike rack • Need a hand pump so I can limp into the repair shop.
+            </p>
+            <div style="font-size: 0.74rem; background: rgba(2, 132, 199, 0.15); color: #38bdf8; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.6rem;">
+              ✈️ Contact: @ndhu_scooter_rider
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 0.5rem;">
+              <span style="font-size: 0.76rem; color: var(--text-dim);" id="demo-helper-count">👥 2 students offered help</span>
+              <button class="btn btn-primary" id="btn-demo-help" onclick="simulateOfferHelp()" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">
+                🤝 I Can Help!
+              </button>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-dim); text-align: center;">Clicking 'I Can Help!' dynamically flips card state to 'In Progress' in real time.</p>
         </div>
       </div>
 
-      <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-        <span>Thank you! Questions & Discussion</span>
-        <span>Hosted on GitHub • Open for Student Contributions</span>
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Tested & Verified via Node.js headless state test suite</span>
+        <span>Slide 3 / 6</span>
       </div>
     </section>
 
+    <!-- =========================================================================
+         SLIDE 4: Interactive Demo — Food Reviews & Roulette
+         ========================================================================= -->
+    <section class="slide" id="slide-4">
+      <div>
+        <div class="slide-badge" style="background: rgba(245, 158, 11, 0.15); color: #fde68a; border-color: rgba(245, 158, 11, 0.35);">Slide 4 • Live Interactive Feature 2 & 3</div>
+        <h1 class="slide-title">Campus Food & Senior Wisdom Hub</h1>
+        <p class="slide-subtitle">Local Shoufeng Eatery Reviews, Random Roulette Wheel, and Battle-Tested Advice</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Food Hub & Live Roulette -->
+        <div class="interactive-simulator">
+          <div class="sim-header">
+            <span>🍜 Campus Food Hub & Roulette</span>
+            <span style="color: #f59e0b; font-size: 0.72rem; font-weight: 700;">INTERACTIVE WHEEL</span>
+          </div>
+
+          <div class="roulette-box">
+            <span style="font-size: 1.8rem;" id="roulette-icon">🎲</span>
+            <div class="roulette-dish-title" id="roulette-title">Zhixue Charcoal Toast</div>
+            <div class="roulette-sub" id="roulette-sub">📍 Zhixue Street • 💰 NT$ 45 - 80</div>
+            <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; padding: 0.35rem 0.65rem; margin-top: 0.5rem; font-size: 0.75rem; color: #fef08a;" id="roulette-dish">
+              ✨ Must Try: Pork Cutlet & Egg Toast + Peanut Spread
+            </div>
+            <button class="btn btn-amber" onclick="spinSlideRoulette()" id="btn-spin-roulette" style="margin-top: 0.75rem; width: 80%;">
+              🎲 Spin Today's Food Roulette!
+            </button>
+          </div>
+        </div>
+
+        <!-- Senior Wisdom Hub -->
+        <div class="card" style="border-top: 3px solid #8b5cf6;">
+          <h3 class="card-title" style="font-size: 1.15rem; margin-bottom: 0.6rem;">Senior Wisdom & Life Archive</h3>
+          <ul style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-left: 1.2rem;">
+            <li><strong>Dorm Tips:</strong> Fighting Shoufeng 90%+ humidity, compressor dehumidifiers, and closet mold bag care.</li>
+            <li><strong>Course Advice:</strong> General Education weighted lottery strategies and first-week add/drop (加簽) etiquette.</li>
+            <li><strong>Hualien Survival:</strong> Scientific protection against ceratopogonid biting midges (Forcipomyia taiwana) using Picaridin.</li>
+            <li><strong>Offline Bookmarking:</strong> Star articles to save directly into LocalStorage for offline study reading.</li>
+          </ul>
+          <div class="card-highlight" style="color: #c084fc;">💡 Live search filtering across topics & mentor tags</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Pre-populated with authentic student reviews & senior mentors</span>
+        <span>Slide 4 / 6</span>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SLIDE 5: NEW DEDICATED SLIDE — AI Campus Assistant & Live Bot Demo!
+         ========================================================================= -->
+    <section class="slide" id="slide-5">
+      <div>
+        <div class="slide-badge" style="background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.35);">Slide 5 • Dedicated New Slide</div>
+        <h1 class="slide-title">Embedded NDHU AI Campus Assistant</h1>
+        <p class="slide-subtitle">Conversational Campus Guide with Natural Intent Matching & Instant Query Answering</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- AI Concept & Graphic -->
+        <div class="card" style="border-top: 3px solid #8b5cf6; justify-content: space-between;">
+          <div>
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem;">
+              <img src="assets/ai_assistant_avatar.png" alt="NDHU AI Campus Guide" style="width: 95px; height: 95px; object-fit: cover; border-radius: 12px; border: 2px solid #8b5cf6; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);">
+              <div>
+                <h3 class="card-title" style="margin-bottom: 0.15rem; font-size: 1.15rem;">NDHU Smart Campus Bot</h3>
+                <span style="font-size: 0.76rem; color: #a78bfa; font-weight: 600;">AI Midterm Knowledge Engine</span>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                  3D AI Assistant mascot engineered for Dong Hwa campus life.
+                </p>
+              </div>
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.65rem;">
+              An embedded client-side conversational assistant designed to bridge freshmen knowledge gaps instantly. Uses natural query intent recognition mapped to NDHU campus datasets.
+            </p>
+
+            <ul style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-left: 1.1rem;">
+              <li><strong>Roadside Breakdown:</strong> Guides students to nearest repair shops across Zhixue Gate.</li>
+              <li><strong>Supper & Dining:</strong> Identifies late-night food stalls open past midnight.</li>
+              <li><strong>Academic Lottery:</strong> Explains add-code etiquette and fire-capacity rules.</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 8px; padding: 0.6rem; font-size: 0.76rem; color: #c4b5fd;">
+            ✨ <strong>Live Interactive Demo:</strong> Click any prompt chip on the right or type a question to test the bot!
+          </div>
+        </div>
+
+        <!-- Live Interactive AI Bot Simulator inside Slide! -->
+        <div class="ai-chat-window">
+          <div style="padding: 0.6rem 0.85rem; background: rgba(30, 41, 59, 0.8); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.4rem;">
+            <span style="font-size: 1rem;">🤖</span>
+            <strong style="font-size: 0.82rem; color: #93c5fd;">NDHU AI Assistant (Live Slide Demo)</strong>
+          </div>
+
+          <div class="ai-chat-messages" id="slide-ai-messages">
+            <div class="bubble bubble-bot">
+              👋 Hello! I am your <strong>NDHU AI Campus Assistant</strong>. Ask me about scooter repairs, Zhixue supper spots, course registration, or surviving Hualien biting midges!
+            </div>
+          </div>
+
+          <div class="ai-quick-prompts">
+            <button class="quick-chip" onclick="askSlideAI('🛵 Scooter flat tire help')">🛵 Scooter help</button>
+            <button class="quick-chip" onclick="askSlideAI('🍜 Recommend supper spot')">🍜 Supper spots</button>
+            <button class="quick-chip" onclick="askSlideAI('🦟 How to stop biting midges')">🦟 Biting midges</button>
+            <button class="quick-chip" onclick="askSlideAI('🎓 Add/drop course advice')">🎓 Add/Drop rules</button>
+          </div>
+
+          <div class="ai-chat-input-bar">
+            <input type="text" id="slide-ai-input" placeholder="Type a campus question..." onkeydown="if(event.key==='Enter') sendSlideAI()">
+            <button class="btn btn-primary" onclick="sendSlideAI()" style="padding: 0.35rem 0.75rem; font-size: 0.78rem;">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Natural query intent parsing • Verified in browser runtime</span>
+        <span>Slide 5 / 6</span>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SLIDE 6: Human-AI Workflow, Verification & Future Scope
+         ========================================================================= -->
+    <section class="slide" id="slide-6">
+      <div>
+        <div class="slide-badge" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.35);">Slide 6 • Engineering & Roadmap</div>
+        <h1 class="slide-title">AI Pair-Programming & Verification</h1>
+        <p class="slide-subtitle">How AI Assisted in Architecture, Testing, Academic Integrity, and Future Impact</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid #8b5cf6;">
+          <div class="card-icon">🤖</div>
+          <h3 class="card-title">Agentic AI Workflow</h3>
+          <p class="card-text">Collaborative pair-programming with Google DeepMind's Antigravity assistant across 4 structured prompt iterations: Architecture → Domain Modeling → Usability & Visual Badges → Automated Verification.</p>
+          <div class="card-highlight" style="color: #c084fc;">Method: Human-guided AI synthesis</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #3b82f6;">
+          <div class="card-icon">🧪</div>
+          <h3 class="card-title">Rigorous Verification</h3>
+          <p class="card-text">Automated Node.js test suites: 100% DOM element ID synchronization, syntax compilation (<code>node -c</code>), state persistence testing, and strict regex scan (zero student IDs stored).</p>
+          <div class="card-highlight" style="color: #60a5fa;">Quality: 100% Verified offline</div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #10b981;">
+          <div class="card-icon">🚀</div>
+          <h3 class="card-title">Impact & Next Steps</h3>
+          <p class="card-text">Immediate benefit for 10,000+ NDHU students.<br>• <strong>Next Step 1:</strong> WebSocket push notifications.<br>• <strong>Next Step 2:</strong> Leaflet.js campus GIS mapping.<br>• <strong>Next Step 3:</strong> Bilingual EN/ZH switcher.</p>
+          <div class="card-highlight" style="color: #34d399;">Impact: Open Source Community Tool</div>
+        </div>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; justify-content: space-between; align-items: center;">
+        <span>Repository: github.com/ndhuAkshit/ndhu-hub</span>
+        <span>Thank you! Questions & Discussion</span>
+      </div>
+    </section>
+
+    <!-- Slide Toast Alert -->
+    <div class="slide-toast" id="slide-toast">Toast alert</div>
   </main>
 
   <!-- Controls -->
@@ -416,6 +907,9 @@
       <div class="dot active" onclick="goToSlide(1)"></div>
       <div class="dot" onclick="goToSlide(2)"></div>
       <div class="dot" onclick="goToSlide(3)"></div>
+      <div class="dot" onclick="goToSlide(4)"></div>
+      <div class="dot" onclick="goToSlide(5)"></div>
+      <div class="dot" onclick="goToSlide(6)"></div>
     </div>
 
     <div style="display: flex; gap: 0.5rem;">
@@ -424,25 +918,28 @@
     </div>
   </div>
 
-  <!-- Speaker Notes Box -->
+  <!-- Speaker Notes Panel -->
   <div class="notes-panel" id="notes-panel">
     <div class="notes-title">
       <span>📝</span>
       <span id="notes-label">Speaker Notes for Slide 1</span>
     </div>
     <div class="notes-content" id="notes-text">
-      "Good morning professor and fellow classmates. As NDHU students living here in Shoufeng, we all appreciate the beauty of our 251-hectare campus. However, its rural valley location creates real daily hassles: roadside scooter breakdowns on Highway 9 or 11C, sudden downpours with 90%+ humidity, and fragmented dining or course advice. That is why I built NDHU Hub — a centralized, private, mobile-first student mutual aid network."
+      "Good morning professor and fellow classmates. Today I am excited to present NDHU Hub — a mobile-first campus mutual aid and life guide platform designed specifically for National Dong Hwa University students."
     </div>
   </div>
 
   <script>
     let currentSlide = 1;
-    const totalSlides = 3;
+    const totalSlides = 6;
 
     const speakerNotes = {
-      1: `"Good morning professor and fellow classmates. As NDHU students living here in Shoufeng, we all appreciate the beauty of our 251-hectare campus. However, its rural valley location creates real daily hassles: roadside scooter breakdowns on Highway 9 or 11C, sudden downpours with 90%+ humidity, and fragmented dining or course advice. That is why I built NDHU Hub — a centralized, private, mobile-first student mutual aid network."`,
-      2: `"NDHU Hub has three interactive pillars, which I will now demonstrate. First, our Emergency Helpboard: students can post requests with landmarks and Telegram handles, and peers can click 'I Can Help!' to update urgency in real time. Second, our Food Directory highlights student budget favorites with signature 'Must Try Dish' badges and a random roulette for lunch indecision. Third, our Senior Wisdom archive shares battle-tested tips on dorm humidity, course lotteries, and biting midges, backed by an embedded AI Campus Bot."`,
-      3: `"To build this project, I used an agentic AI pair-programming workflow with Google DeepMind's Antigravity. By applying structured iterative prompts, we created a lightweight, zero-dependency web app with dark mode, verified 100% DOM synchronization through automated Node.js tests, and guaranteed strict student privacy. Looking forward, we plan to add WebSocket push notifications and interactive GIS mapping. Thank you, and I welcome any questions!"`
+      1: `"Good morning professor and classmates. Today I am presenting NDHU Hub — a mobile-first campus mutual aid and life guide platform designed for National Dong Hwa University. As students living here in Shoufeng, our 251-hectare campus brings unique geographic isolation and weather challenges. NDHU Hub centralizes emergency assistance, food discovery, and senior survival wisdom into one private web app."`,
+      2: `"Slide 2 highlights our three everyday campus pain points: First, highway scooter breakdowns along Highway 9 and 11-Bing, where students get stranded far from garages. Second, Shoufeng's 90%+ humidity that causes severe dorm mold, sudden downpours, and biting midges. Third, fragmented advice scattered across expiring social media threads. NDHU Hub turns individual struggles into mutual community aid."`,
+      3: `"Slide 3 demonstrates our Emergency Helpboard. On the right is a live interactive simulation of an actual request: a flat tire near Zhixue Gate. Notice the Telegram handle for safe peer contact. If I click 'I Can Help!', watch the card instantly transition to 'In Progress', notifying the student in real time that help is coming."`,
+      4: `"Slide 4 highlights our Food Hub and Senior Wisdom archive. Here on the left is our live interactive 'What to Eat Today?' Food Roulette. When students cannot decide where to eat, clicking this wheel randomly shuffles verified student spots like Zhixue Charcoal Toast and Fengchun Sugarcane Ice. On the right, our Senior Wisdom hub provides survival guides on dorm dehumidifiers and course lotteries."`,
+      5: `"Slide 5 presents our new dedicated AI Campus Assistant! We embedded a conversational assistant with natural query intent recognition. Right here on this slide, you can click any prompt chip or type a question. For example, clicking 'Scooter help' or 'Biting midges' triggers instant actionable advice with local landmarks and campus security hotlines."`,
+      6: `"Slide 6 summarizes our Human-AI collaborative workflow. Working with Google DeepMind's Antigravity assistant, we iteratively built clean, modular code. We enforced strict quality control: 100% DOM synchronization through automated Node.js tests, zero external dependencies, and a privacy audit confirming zero student IDs are stored. In the future, we plan to add WebSockets and GIS campus mapping. Thank you!"`
     };
 
     function updateSlide() {
@@ -453,6 +950,10 @@
       document.querySelectorAll('.dot').forEach((d, idx) => {
         d.classList.toggle('active', idx + 1 === currentSlide);
       });
+
+      // Update progress bar
+      const pct = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
 
       document.getElementById('slide-indicator').textContent = `Slide ${currentSlide} of ${totalSlides}`;
       document.getElementById('btn-prev').disabled = (currentSlide === 1);
@@ -486,14 +987,148 @@
       panel.classList.toggle('open');
     }
 
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function showSlideToast(msg) {
+      const toast = document.getElementById('slide-toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // Interactive Demo 1: SOS Card Simulator
+    let isHelping = false;
+    function simulateOfferHelp() {
+      const card = document.getElementById('demo-sos-card');
+      const statusPill = document.getElementById('demo-sos-status');
+      const countLabel = document.getElementById('demo-helper-count');
+      const btn = document.getElementById('btn-demo-help');
+
+      if (!isHelping) {
+        isHelping = true;
+        card.classList.add('status-helping');
+        statusPill.className = 'status-pill status-helping-pill';
+        statusPill.textContent = '⏳ In Progress';
+        countLabel.textContent = '👥 3 students offered help';
+        btn.textContent = '✓ Help Offered!';
+        btn.style.background = '#10b981';
+        showSlideToast('❤️ Offer sent! Request flipped to "In Progress"');
+      } else {
+        isHelping = false;
+        card.classList.remove('status-helping');
+        statusPill.className = 'status-pill status-urgent-pill';
+        statusPill.textContent = '🚨 Urgent';
+        countLabel.textContent = '👥 2 students offered help';
+        btn.textContent = '🤝 I Can Help!';
+        btn.style.background = '#1d4ed8';
+        showSlideToast('Reset status back to "Urgent"');
+      }
+    }
+
+    // Interactive Demo 2: Food Roulette
+    const demoDishes = [
+      { name: "Zhixue Charcoal Toast", area: "Zhixue Street", price: "NT$ 45 - 80", must: "Pork Cutlet & Egg Toast + Peanut Spread", icon: "🥪" },
+      { name: "Fengchun Sugarcane Ice", area: "Shoufeng Town", price: "NT$ 50 - 70", must: "Smoky Sugarcane Ice + Melted Taro Paste", icon: "🍧" },
+      { name: "Lakeside Vegetarian Cafeteria", area: "Near Main Gate", price: "NT$ 60 - 95", must: "Braised Mountain Tofu & Seasonal Ferns", icon: "🥗" },
+      { name: "Zhixue Big Bone Noodle House", area: "Zhixue Street", price: "NT$ 75 - 120", must: "Bone Broth Noodles + Free Soy Milk", icon: "🍜" },
+      { name: "Midnight Crisp Salted Chicken", area: "Zhixue Street", price: "NT$ 80 - 150", must: "Boneless Salted Chicken + Fried Green Beans", icon: "🍗" }
+    ];
+
+    function spinSlideRoulette() {
+      const btn = document.getElementById('btn-spin-roulette');
+      const iconEl = document.getElementById('roulette-icon');
+      const titleEl = document.getElementById('roulette-title');
+      const subEl = document.getElementById('roulette-sub');
+      const dishEl = document.getElementById('roulette-dish');
+
+      btn.disabled = true;
+      iconEl.textContent = '🎲';
+      titleEl.textContent = 'Shuffling student spots...';
+
+      let count = 0;
+      const timer = setInterval(() => {
+        const item = demoDishes[Math.floor(Math.random() * demoDishes.length)];
+        titleEl.textContent = item.name;
+        subEl.textContent = `📍 ${item.area} • 💰 ${item.price}`;
+        count++;
+
+        if (count >= 10) {
+          clearInterval(timer);
+          const finalItem = demoDishes[Math.floor(Math.random() * demoDishes.length)];
+          iconEl.textContent = finalItem.icon;
+          titleEl.textContent = finalItem.name;
+          subEl.textContent = `📍 ${finalItem.area} • 💰 ${finalItem.price}`;
+          dishEl.innerHTML = `<strong>✨ Must Try:</strong> ${finalItem.must}`;
+          btn.disabled = false;
+          showSlideToast(`🎉 Today's pick: ${finalItem.name}!`);
+        }
+      }, 100);
+    }
+
+    // Interactive Demo 3: Live AI Bot in Slide
+    function askSlideAI(promptText) {
+      appendSlideMessage('user', promptText);
+      generateSlideAIResponse(promptText);
+    }
+
+    function sendSlideAI() {
+      const input = document.getElementById('slide-ai-input');
+      const text = input.value.trim();
+      if (!text) return;
+      appendSlideMessage('user', text);
+      input.value = '';
+      generateSlideAIResponse(text);
+    }
+
+    function appendSlideMessage(sender, text) {
+      const box = document.getElementById('slide-ai-messages');
+      const div = document.createElement('div');
+      div.className = `bubble bubble-${sender === 'user' ? 'user' : 'bot'}`;
+      div.innerHTML = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function generateSlideAIResponse(query) {
+      const q = query.toLowerCase();
+      let answer = "";
+
+      if (q.includes('scooter') || q.includes('tire') || q.includes('flat') || q.includes('breakdown')) {
+        answer = "🚨 <strong>Scooter Breakdown:</strong> Zhixue repair shops are right across Zhixue Gate (Gate 2). Post an urgent card on our Emergency Helpboard for a portable pump, or call Campus 24hr Security at <code>03-890-6995</code>.";
+      } else if (q.includes('supper') || q.includes('food') || q.includes('eat')) {
+        answer = "🍜 <strong>Supper Recommendation:</strong> Zhixue Midnight Crisp Salted Chicken is open until 01:30 AM! Or spin our Food Roulette on Slide 4 for a quick random pick.";
+      } else if (q.includes('midge') || q.includes('mosquito') || q.includes('humidity')) {
+        answer = "🦟 <strong>Midge Defense:</strong> Regular citronella does NOT deter Hualien's <em>Forcipomyia taiwana</em> biting midges. Use repellents with <strong>Picaridin (15-20%)</strong> or DEET, and wear UV long pants near dorm lawns!";
+      } else if (q.includes('add') || q.includes('course') || q.includes('lottery')) {
+        answer = "🎓 <strong>Add/Drop Strategy:</strong> Arrive 10 mins early with a printed slip, sit in the front row, and explain politely how the course fits your graduation plan.";
+      } else {
+        answer = `🤖 <strong>NDHU Campus Assistant:</strong> I'm here to help with campus mutual aid, eateries, course add/drop rules, and Shoufeng weather survival!`;
+      }
+
+      setTimeout(() => {
+        appendSlideMessage('bot', answer);
+      }, 350);
+    }
+
     // Keyboard support
     document.addEventListener('keydown', (e) => {
+      // Don't trigger slide change when typing in AI chat input
+      if (document.activeElement.id === 'slide-ai-input') return;
+
       if (e.key === 'ArrowRight' || e.key === ' ') {
         nextSlide();
       } else if (e.key === 'ArrowLeft') {
         prevSlide();
       } else if (e.key === 's' || e.key === 'S') {
         toggleNotes();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
       }
     });
   </script>
